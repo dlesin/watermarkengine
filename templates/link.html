@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block head_title %}Спасибо{% endblock head_title %}
+{% block head_description %}Описание Спасибо{% endblock head_description %}
+{% block content %}
+    <section class="main">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12 my-auto">
+                    {% if uuid %}
+                        <h1 class="text-center"><a id="link" href="#">Архив</a> готов...</h1>
+                    {% else %}
+                        <h1 class="text-center">Для Вас ничего нету...</h1>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
