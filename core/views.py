@@ -13,7 +13,7 @@ from .forms import FileFieldForm
 
 
 def do_watermark(directory, file, text):
-    color = (255, 255, 255, 75)
+    color = (255, 255, 255, 55)
     font = 'static/font/roboto/Roboto-Bold.ttf'
     filename = 'media/{0}/{1}'.format(directory, str(file))
     im = Image.open(file).convert('RGBA')
@@ -24,10 +24,16 @@ def do_watermark(directory, file, text):
     x = width / 6.5
     y = height / 6.2
     draw.text((x, y), text, color, font)
+    x = width / 1.5
+    y = height / 6.2
+    draw.text((x, y), text, color, font)
     x = width / 2.5
     y = height / 2
     draw.text((x, y), text, color, font)
     x = width / 1.5
+    y = height / 1.2
+    draw.text((x, y), text, color, font)
+    x = width / 6.5
     y = height / 1.2
     draw.text((x, y), text, color, font)
     result_img = Image.alpha_composite(im, im_watermark)
@@ -36,8 +42,9 @@ def do_watermark(directory, file, text):
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):
-        # if request.session.get('uuid'):
-        #     shutil.rmtree('media/{0}'.format(request.session['uuid']), ignore_errors=True)
+        if request.session.get('uuid'):
+            shutil.rmtree('media/{0}'.format(request.session['uuid']), ignore_errors=True)
+            del request.session['uuid']
         form = FileFieldForm(self.request.POST or None)
         context = {
             'form': form,
@@ -52,9 +59,14 @@ class HomeView(View):
             if len(files) > 50:
                 messages.error(request, 'Вы выбрали больше 50 фото!')
                 return redirect('home_view_url', permanent=True)
+            size = 0
+            for file in files:
+                size += file.size
+            if size > 52_428_800:
+                messages.error(request, 'Размер файлов привышает 50 Mb!')
+                return redirect('home_view_url', permanent=True)
             directory = str(uuid4())
             os.mkdir('media/{0}'.format(directory))
-
             for file in files:
                 do_watermark(directory, file, text)
             shutil.make_archive(root_dir='media/{0}'.format(directory),
@@ -74,6 +86,10 @@ class LinkView(TemplateView):
         return context
 
 
+class AboutView(TemplateView):
+    template_name = "about.html"
+
+
 class GetLinkView(View):
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
@@ -84,14 +100,10 @@ class GetLinkView(View):
 
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
-            print(request.POST)
             status = request.POST.get('status')
-            print(status)
             if status == 'true':
-                shutil.rmtree('media/{0}'.format(request.session['uuid']), ignore_errors=True)
-                del request.session['uuid']
-                print('DEL')
+                # shutil.rmtree('media/{0}'.format(request.session['uuid']), ignore_errors=True)
+                # del request.session['uuid']
                 return JsonResponse({'data': True})
             else:
                 return redirect('home_view_url', permanent=True)
-

@@ -1,3 +1,12 @@
+$(document).on('change', '.input-files-js', (e) => {
+    const $this = $(e.target),
+        // $label = $this.next('label'),
+        $files = $this[0].files;
+
+    if ($files && $files.length > 1)
+        $('.custom-file-label').html($files.length + ' файлов выбранно')
+});
+
 $(document).ready(function () {
 
     function getCookie(name) {
@@ -39,11 +48,11 @@ $(document).ready(function () {
                     url: '/getlink/',
                     data: data,
                     dataType: 'json',
-                    success: function (data) {
+                    success: setTimeout(function (data) {
                         const url = window.location.origin;
                         $(location).attr('href', url);
-                    }
-                })
+                    }, 1000),
+            })
             },
             error: function (e) {
                 alert('Что пошло не так...');

@@ -5,13 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{% block head_description %}MAIN DESC{% endblock head_description %}">
+    <meta name="description" content="{% block head_description %}Бесплатно Поставьте водяной знак на фото онлайн{% endblock head_description %}">
     <meta name="author" content="YA">
-    <title>{% block head_title %}SITE{% endblock head_title %}</title>
+    <title>{% block head_title %}Site - Бесплатно поставьте водяной знак на фото онлайн{% endblock head_title %}</title>
     <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "css/mdb.min.css" %}">
-    {#    <link rel="stylesheet" href="{% static "css/normalize.css" %}">#}
-    {#    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">#}
     <link rel="stylesheet" href="{% static "font/font-awesome/css/font-awesome.min.css" %}">
     <link rel="stylesheet" href="{% static "css/style.css" %}">
     <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
@@ -19,16 +17,15 @@
 </head>
 <body>
 {% include "navbar.html" %}
-<div>
     {% if messages %}
         {% for message in messages %}
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalCenterTitle"
+            <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog"
+                 aria-labelledby="ModalCenterTitle"
                  aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Информация</h5>
+                            <h5 class="modal-title" id="ModalLongTitle">Информация</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -44,7 +41,6 @@
             </div>
         {% endfor %}
     {% endif %}
-</div>
 {% block content %}{% endblock content %}
 {% block extra_body %}{% endblock extra_body %}
 {% include "footer.html" %}
@@ -52,7 +48,7 @@
 {% if messages %}
     <script type="application/javascript">
         $(document).ready(function () {
-            $('#exampleModalCenter').modal({show: true});
+            $('#ModalCenter').modal({show: true});
         });
     </script>
 {% endif %}
